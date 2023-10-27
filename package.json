@@ -1,4 +1,8 @@
 {
+  "name": "chatgpt4-scraper",
+  "lockfileVersion": 3,
+  "requires": true,
+  "packages": {},
   "dependencies": {
     "chrome-remote-interface": "^0.33.0",
     "fs": "^0.0.1-security",
