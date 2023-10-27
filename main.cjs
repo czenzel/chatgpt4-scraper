@@ -8,7 +8,7 @@ const argv = yargs.argv;
 const cdp_js_content = fs.readFileSync('cdp.js', 'utf8');
 
 async function getOutput(input) {
-    let client, outputProp
+    let client, outputHtml
     try {
         client = await CDP();
 
@@ -16,7 +16,7 @@ async function getOutput(input) {
         const { DOM, Runtime } = client;
 
         // Ensure the DOM is fully loaded.
-        await DOM.getDocument();
+        const document = await DOM.getDocument();
 
         // Define the script that will be evaluated on the page.
         const scriptToEvaluate = `${cdp_js_content}submitForm('${input}');`;
@@ -29,7 +29,7 @@ async function getOutput(input) {
 
         if (result.result.objectId) {
             const properties = await Runtime.getProperties({ objectId: result.result.objectId });
-            outputProp = properties.result.find(prop => prop.name === "output");
+            outputHtml = await Runtime.evaluate({expression: 'document.body.getElementsByClassName("markdown")[document.body.getElementsByClassName("markdown").length - 1].innerHTML'});
         }
 
     } catch (err) {
@@ -38,7 +38,7 @@ async function getOutput(input) {
         if (client) {
             await client.close();
         }
-        return outputProp.value.value
+        return outputHtml.value.value;
     }
     
 }
@@ -47,7 +47,6 @@ async function run() {
     let query = argv.query
     const output = await getOutput(query)
     console.log(`output: ${output}`)
-    
 }
 
 run();
