@@ -38,7 +38,7 @@ async function getOutput(input) {
         if (client) {
             await client.close();
         }
-        return outputHtml.value.value;
+        return outputHtml.result.value;
     }
     
 }
