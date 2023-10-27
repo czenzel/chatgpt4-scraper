@@ -26,7 +26,7 @@ async function submitForm(inputQuery) {
         submitButton.click();
     }
 
-    await sleepyTime(10000);
+    await sleepyTime(50000);
 
     var elements = document.querySelectorAll('[data-testid^="conversation"]');
 
